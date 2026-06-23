@@ -1,25 +1,31 @@
 import { useState } from "react"
 import HabitForm from "./components/HabitForm"
-import HabitList, { type Habit } from "./components/HabitList"
+import HabitList from "./components/HabitList"
 import Header from "./components/Header"
-
+import { HabitProvider } from "./context/habitProvider"
+import { addWeeks, eachDayOfInterval, endOfWeek, startOfWeek } from "date-fns"
 
 function App() {
-  const [habits, setHabits] = useState<Habit[]>([])
 
-  function addHabit(name: string) {
-    setHabits([...habits, { id: crypto.randomUUID(), name }])
-  }
+  const [weekOffset, setWeekOffset] = useState(0)
 
-  function deleteHabit(id: string) {
-    setHabits(cur => cur.filter(h => h.id !== id))
-  }
+  const week = addWeeks(new Date(), weekOffset)
 
+  const visibleDates = eachDayOfInterval({
+    start: startOfWeek(week, { weekStartsOn: 1 }),
+    end: endOfWeek(week, { weekStartsOn: 1 })
+  })
   return (
     <div className="max-w-2xl mx-auto p-4 flex flex-col gap-4">
-      <Header />
-      <HabitForm addHabit={addHabit} />
-      <HabitList habits={habits} deleteHabit={deleteHabit} />
+      <HabitProvider>
+        <Header
+          visibleDates={visibleDates}
+          onPrev={() => setWeekOffset(o => o - 1)}
+          onNext={() => setWeekOffset(o => o + 1)}
+        />
+        <HabitForm />
+        <HabitList visibleDates={visibleDates} />
+      </HabitProvider>
     </div>
   )
 }

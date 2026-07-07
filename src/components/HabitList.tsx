@@ -51,23 +51,30 @@ function HabitItem({ habit, visibleDates }: HabitItemProps) {
                 <Button
                     onClick={() => deleteHabit(habit.id)}
                     variant="ghost-destructive"
+                    aria-label={`Delete ${habit.name}`}
                     className="text-sm">
                     Delete
                 </Button>
             </div>
             <div className="flex gap-1.5">
-                {visibleDates.map(date => (
-                    <Button
-                        key={date.toISOString()}
-                        disabled={isFuture(date)}
-                        className="flex flex-1 flex-col items-center gap-0.5 rounded-lg text-xs"
-                        variant={habit.completions?.some(d => isSameDay(date, d)) ? "primary" : "secondary"}
-                        onClick={() => toggleHabit(habit.id, date)}
-                    >
-                        <span className="font-medium">{format(date, "EEE")}</span>
-                        <span className="text-sm">{format(date, "d")}</span>
-                    </Button>
-                ))}
+                {visibleDates.map(date => {
+                    const isComplete = habit.completions?.some(d => isSameDay(date, d)) ?? false
+
+                    return (
+                        <Button
+                            key={date.toISOString()}
+                            disabled={isFuture(date)}
+                            className="flex flex-1 flex-col items-center gap-0.5 rounded-lg text-xs"
+                            variant={isComplete ? "primary" : "secondary"}
+                            aria-pressed={isComplete}
+                            aria-label={`${isComplete ? "Mark incomplete" : "Mark complete"} for ${habit.name} on ${format(date, "EEEE, MMMM d")}`}
+                            onClick={() => toggleHabit(habit.id, date)}
+                        >
+                            <span className="font-medium">{format(date, "EEE")}</span>
+                            <span className="text-sm">{format(date, "d")}</span>
+                        </Button>
+                    )
+                })}
             </div>
         </div>
     )

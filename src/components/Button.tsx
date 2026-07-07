@@ -6,11 +6,12 @@ interface ButtonProps extends ComponentProps<"button"> {
 
 type VariantStyles = "primary" | "secondary" | "ghost-destructive"
 
-export default function Button({ variant = "primary", className, ...props }: ButtonProps) {
+export default function Button({ variant = "primary", className = "", type = "button", ...props }: ButtonProps) {
     return (
         <button
+            type={type}
             {...props}
-            className={`${getVariantStyles(variant)} transition-colors rounded px-2 py-1 disabled:opacity-30 disabled:cursor-not-allowed ${className}`}>
+            className={`${getVariantStyles(variant)} rounded px-2 py-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-300 disabled:cursor-not-allowed disabled:opacity-30 ${className}`.trim()}>
         </button>
     )
 }

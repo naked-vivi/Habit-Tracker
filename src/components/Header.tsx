@@ -34,8 +34,8 @@ function Header({ visibleDates, onPrev, onNext }: HeaderProps) {
             <div className="flex flex-col items-end gap-1">
                 <span className="text-sm text-zinc-400">{dateRange}</span>
                 <div className="flex items-center gap-3">
-                    <Button onClick={onPrev}>Prev</Button>
-                    <Button onClick={onNext} disabled={visibleDates.some(d => isToday(d))}>Next</Button>
+                    <Button onClick={onPrev} aria-label="Show previous week">Prev</Button>
+                    <Button onClick={onNext} disabled={visibleDates.some(d => isToday(d))} aria-label="Show next week">Next</Button>
                 </div>
             </div>
         </header>

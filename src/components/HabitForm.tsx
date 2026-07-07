@@ -24,7 +24,7 @@ function HabitForm() {
                 className="flex-1 bg-zinc-800 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-violet-500"
                 placeholder="New habit..."
             />
-            <Button disabled={!name.trim()} className="rounded-lg px-4 py-2 font-medium">Add Habit</Button>
+            <Button type="submit" disabled={!name.trim()} className="rounded-lg px-4 py-2 font-medium">Add Habit</Button>
         </form>
     )
 }

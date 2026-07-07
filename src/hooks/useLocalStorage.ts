@@ -3,8 +3,10 @@ import { useEffect, useState } from "react"
 
 export function useLocalStorage<T>(key: string, initialValue: T) {
     const [storedValue, setStoredValue] = useState<T>(() => {
+        if (typeof window === "undefined") return initialValue
+
         try {
-            const item = localStorage.getItem(key)
+            const item = window.localStorage.getItem(key)
             if (item == null) return initialValue
 
             return JSON.parse(item, dateReviver)
@@ -14,7 +16,13 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     })
 
     useEffect(() => {
-        localStorage.setItem(key, JSON.stringify(storedValue))
+        if (typeof window === "undefined") return
+
+        try {
+            window.localStorage.setItem(key, JSON.stringify(storedValue))
+        } catch {
+            // Keep the in-memory state usable when browser storage is unavailable.
+        }
     }, [storedValue, key])
 
     return [storedValue, setStoredValue] as const

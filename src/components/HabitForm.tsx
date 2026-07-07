@@ -9,9 +9,11 @@ function HabitForm() {
     function handleSubmit(e: SubmitEvent) {
         e.preventDefault()
 
-        if (name.trim() === "") return
+        const trimmedName = name.trim()
+        if (!trimmedName) return
+
+        addHabit(trimmedName)
         setName("")
-        addHabit(name)
     }
 
     return (

@@ -10,7 +10,10 @@ export function HabitProvider({ children }: HabitProviderProps) {
     const [habits, setHabits] = useLocalStorage<Habit[]>("Habit", [])
 
     function addHabit(name: string) {
-        setHabits(cur => [...cur, { id: crypto.randomUUID(), name, completions: [new Date()] }])
+        const trimmedName = name.trim()
+        if (!trimmedName) return
+
+        setHabits(cur => [...cur, { id: crypto.randomUUID(), name: trimmedName, completions: [] }])
     }
 
     function deleteHabit(id: string) {
@@ -43,4 +46,3 @@ export function HabitProvider({ children }: HabitProviderProps) {
         </HabitContext>
     )
 }
-
